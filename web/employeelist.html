@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>EmployeeList</title>
+    <link rel="stylesheet" href="employeelist.css">
+  </head>
+  <body>
+    <h1>Employee List Example</h1>
+    
+    <p>Employee List</p>
+    
+    <p id="message"></p>
+    
+    <div id="employeeForm">
+      <label id="firstNameLabel" for="firstName">First Name*</label> 
+      <input type="text" id="firstName" name="firstName" />
+      <span id="firstNameValidation"></span>
+      <br />
+
+      <label id="lastNameLabel" for="lastName">Last Name*</label> 
+      <input type="text" id="lastName" name="lastName" />
+      <span id="lastNameValidation"></span>
+      <br />
+      
+      <button id="addEmployee">Add Employee</button>
+      <button id="refreshList">Refresh List</button>
+      
+
+    </div>
+    
+    <div id="employeeDiv" style="visibility:hidden">
+        <table id="employeeTable">
+            <tbody id="employeeRows">
+            <tr id="row-{{rowId}}">
+                <td>{{employee.firstName}}</td>
+                <td>{{employee.lastName}}</td>
+                <td><a id="row-remove{{rowId}}" class="row-remove-link" href="http://host/{{employee.firstName}}/{{employee.lastName}}">remove</a></td>          
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <div id="locale-strings" style="visibility:hidden">
+      <div id="requiredValidator">required</div>
+      <div id="nameValidatorText">have letters and special charcters like ',.-</div>
+      <div id="nameValidatorText-First-Name-en">{label} has illegal characters</div>
+      <div id="employeeFormNotValid">The employee form is not valid, fix validation errors then try again.</div>
+      <div id="employeeAdded">Added employee</div>
+      
+    </div>
+    
+    <script type="application/dart" src="employeelist.dart"></script>
+    <script src="packages/browser/dart.js"></script>
+  </body>
+</html>

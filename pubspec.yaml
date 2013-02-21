@@ -1,0 +1,4 @@
+name: EmployeeList
+description: A sample web application
+dependencies:
+  browser: 0.3.2

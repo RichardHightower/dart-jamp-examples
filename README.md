@@ -63,4 +63,16 @@ You can learn more about JAMP here:
 * https://github.com/json-amp/json-amp.github.com/wiki/Intro-to-JAMP
 * http://hessian.caucho.com/jamp/draft-ferg-jamp-v0.html
 
+The client sends JSON over websockets like this:
+
+```
+["query",{},"me",2,"/test","addEmployee","Rick","Hightower"]
+```
+
+The server sends back responses like this:
+
+```
+["reply",{},"me",1,true]
+```
+
 

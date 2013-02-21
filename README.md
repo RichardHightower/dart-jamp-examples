@@ -23,7 +23,7 @@ import com.caucho.amp.AmpPublish;
 import com.caucho.amp.AmpService;
 
 @AmpService
-@AmpPublish("/test")
+@AmpPublish("/empService")
 @Startup
 public class EmployeeService {
 
@@ -66,13 +66,13 @@ You can learn more about JAMP here:
 The client sends JSON over websockets like this:
 
 ```
-["query",{},"me",2,"/test","addEmployee","Rick","Hightower"]
+["query", {}, "me", 2, "/empService", "addEmployee", "Rick", "Hightower"]
 ```
 
 The server sends back responses like this:
 
 ```
-["reply",{},"me",1,true]
+["reply", {}, "me", 2, true]
 ```
 
 

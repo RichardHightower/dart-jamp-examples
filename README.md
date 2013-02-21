@@ -10,49 +10,57 @@ This is an early example of combining JAMP with Dart.
 
 Using the annotations below this service is exposed via JAMP/Websockets to the Dart client.
 
- package com.example;
+```Java
+package com.example;
 
- import java.util.ArrayList;
- import java.util.List;
+import java.util.ArrayList;
+import java.util.List;
 
- import javax.annotation.PostConstruct;
- import javax.ejb.Startup;
+import javax.annotation.PostConstruct;
+import javax.ejb.Startup;
 
- import com.caucho.amp.AmpPublish;
- import com.caucho.amp.AmpService;
+import com.caucho.amp.AmpPublish;
+import com.caucho.amp.AmpService;
 
- @AmpService
- @AmpPublish("/test")
- @Startup
- public class EmployeeService {
+@AmpService
+@AmpPublish("/test")
+@Startup
+public class EmployeeService {
 
-   List <Employee> employees = new ArrayList<>();
+	List<Employee> employees = new ArrayList<>();
 
-	 public boolean addEmployee(String firstName, String lastName) {
+	public boolean addEmployee(String firstName, String lastName) {
 		employees.add(new Employee(firstName, lastName));
 		return true;
-	 }
+	}
 
-	 public boolean removeEmployee(String firstName, String lastName) {
+	public boolean removeEmployee(String firstName, String lastName) {
 		employees.remove(new Employee(firstName, lastName));
 		return true;
-	 }
+	}
 
-	
-	 public List <Employee> list() {
+	public List<Employee> list() {
 		return employees;
-	 }
-	
-	 @PostConstruct 
-	 public void init () {
-	 }
-	
+	}
 
- }
- 
+	@PostConstruct
+	public void init() {
+	}
+
+}
+
+```
+RAMP (part of Resin 7) exposes that above service as a JAMP service.
+RAMP gurantees that the abve service is accessed in a single thread using the actor model.
+
+The Dart source which is part of this project whos how to formulate calls via JSON and recieve replies.
+The Dart source implements a simple CRUD listing for employees.
+
 You can learn more about JAMP here:
 
-http://hessian.caucho.com/jamp/index.xtp
-http://json-amp.github.com/
-https://github.com/json-amp/json-amp.github.com/wiki/Intro-to-JAMP
-http://hessian.caucho.com/jamp/draft-ferg-jamp-v0.html
+* http://hessian.caucho.com/jamp/index.xtp
+* http://json-amp.github.com/
+* https://github.com/json-amp/json-amp.github.com/wiki/Intro-to-JAMP
+* http://hessian.caucho.com/jamp/draft-ferg-jamp-v0.html
+
+

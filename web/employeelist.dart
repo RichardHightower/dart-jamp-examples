@@ -21,20 +21,16 @@ void main() {
   initEmployeeService();
   Function addAction = (Event e)=>addEmployee();
   Function refreshListAction = (Event e)=>refreshList();
-  
+
   employeeForm = query("#employeeForm");
   firstName = new FieldComponent(employeeForm, "firstName", addAction);
   lastName = new FieldComponent(employeeForm, "lastName", addAction);
   addEmployeeButton = query("#addEmployee");
   refreshListButton = query("#refreshList");
   message = query("#message");
-  
-  addEmployeeButton.on.click.add(addAction);
-  
-  
-  /*
-  refreshListButton.on.click.add(refreshListAction);
-  */
+
+  addEmployeeButton.onClick.listen(addAction);
+  refreshListButton.onClick.listen(refreshListAction);
   components = [firstName, lastName];
   table = new TableComponent("employee");
 }
@@ -63,15 +59,15 @@ void populateTable() {
   int index = 0;
   for (Employee employee in employeeService.employees) {
     index++;
-    body.add(rowTemplate
+    body.write(rowTemplate
         .replaceAll("{{employee.firstName}}", employee.firstName)
         .replaceAll("{{employee.lastName}}", employee.lastName)
         .replaceAll("{{rowId}}", "$index"));
-  }    
+  }
   table.setRows(body.toString());
   List<Element> rowLinks = queryAll(".row-remove-link");
-  rowLinks.forEach((Element e)=>e.on.click.add(removeLinkClicked));
-  table.turnOn();  
+  rowLinks.forEach((Element e)=>e.onClick.listen(removeLinkClicked));
+  table.turnOn();
 }
 
 
@@ -83,7 +79,7 @@ void removeLinkClicked(MouseEvent event) {
   String lastName = parts[4];
   Employee employee = new Employee(firstName, lastName);
   employeeService.removeEmployee(employee, populateTable);
-  
+
 }
 
 bool clearTextField(FieldComponent comp) {

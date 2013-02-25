@@ -28,20 +28,20 @@ String buildWebSocketURL(String uri) {
   String scheme = parts[0];
   String hostPort = parts[2];
   String wssScheme = null;
-  
-  
+
+
   if (scheme=="http:") {
     wssScheme="ws:";
   } else if (scheme=="https:") {
     wssScheme="wss:";
   }
-  
+
   hostPort = hostPort.replaceAll("3030", "8080");
-  
+
   String wssUrl = "${wssScheme}//${hostPort}${uri}";
-  
+
   return wssUrl;
-  
+
 }
 
 
@@ -49,15 +49,15 @@ WebSocket initWebSocket([int retrySeconds = 2]) {
   var encounteredError = false;
   WebSocket webSocket;
 
-  
+
   String url = buildWebSocketURL("/employeeService/jamp");
   print ("URL = $url");
   webSocket = new WebSocket(url);
-  
+
   webSocket.onOpen.listen((e) {
     print('Connected');
   });
-  
+
   webSocket.onClose.listen((e) {
     print('web socket closed, retrying in $retrySeconds seconds');
     if (!encounteredError) {
@@ -65,7 +65,7 @@ WebSocket initWebSocket([int retrySeconds = 2]) {
     }
     encounteredError = true;
   });
-  
+
   webSocket.onError.listen((e) {
     print("Error connecting to ws");
     if (!encounteredError) {
@@ -74,7 +74,9 @@ WebSocket initWebSocket([int retrySeconds = 2]) {
     encounteredError = true;
   });
   
-  webSocket.on.message.add((MessageEvent e) {
+  
+
+  webSocket.onMessage.listen((MessageEvent e) {
     print('received message ${e.data}');
     String data = (e.data as String).replaceAll(":,", ":");
     List list = json.parse(data) as List;
@@ -82,24 +84,24 @@ WebSocket initWebSocket([int retrySeconds = 2]) {
       employeeService.replyRecieved(list[3], list[4]);
     }
   });
-  
-  
+
+
   return webSocket;
 }
 
 
 class EmployeeService {
-  
+
   WebSocket webSocket;
   int messageId = 1;
   List<Employee> employees = [];
 
-  
-  
+
+
   EmployeeService() {
     this.webSocket = initWebSocket();
   }
-  
+
   void replyRecieved (int qid, Object returnValue) {
     print ("replyRecieved");
     JampMethodCall call = calls["$qid"];
@@ -116,7 +118,7 @@ class EmployeeService {
         doRemoveEmployee(call.args[0]);
       }
       calls.remove("$qid");
-      call.func();   
+      call.func();
     } else if (call.methodName == "list") {
       employees = [];
       List<Map> maps = returnValue as List<Map>;
@@ -125,7 +127,7 @@ class EmployeeService {
         employees.add(e);
       }
       calls.remove("$qid");
-      call.func();   
+      call.func();
     }
   }
   void addEmployee(Employee employee, Function func) {
@@ -151,7 +153,7 @@ class EmployeeService {
     }
     messageId++;
   }
-  
+
   void removeEmployee(Employee employee, Function func) {
     print("removeEmployee called Employee(${employee.firstName}, ${employee.lastName})" );
     List list = [];
@@ -162,7 +164,7 @@ class EmployeeService {
     list.add('"/test"');
     list.add('"removeEmployee"');
     list.add('"${employee.firstName}"');
-    list.add('"${employee.lastName}"');    
+    list.add('"${employee.lastName}"');
     print(list.toString());
     if (this.webSocket.readyState == WebSocket.OPEN) {
       this.webSocket.send(list.toString().replaceAll(" ", ""));
@@ -173,7 +175,7 @@ class EmployeeService {
       print ("websocket  unable to send ${list.toString().replaceAll(" ", "")}");
     }
     messageId++;
-     
+
   }
 
   void refreshList(Function func) {
@@ -194,7 +196,7 @@ class EmployeeService {
       print ("websocket  unable to send ${list.toString().replaceAll(" ", "")}");
     }
     messageId++;
-     
+
   }
 
 
@@ -203,14 +205,14 @@ class EmployeeService {
     if (index!=-1) {
       employeeService.employees.removeAt(index);
     }
-  
+
   }
 
-  
+
 }
 
 void initEmployeeService(){
-  
+
   employeeService = new EmployeeService();
 }
 

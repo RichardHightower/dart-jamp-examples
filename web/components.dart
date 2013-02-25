@@ -6,18 +6,18 @@ const String nameRegexString = r"^[a-zA-Zàáâäãåèéêëìíîïòóôöõ�
 final RegExp nameRegex = new RegExp(nameRegexString);
 
 /**
- * 
+ *
 
 This looks up locale string that are embedded in the HTML page in hidden span tags.
 If you pass the key of "nameValidator" with a field of "First Name", this function will look for the following locale specific strings:
-nameValidatorText-First-Name-en-US 
+nameValidatorText-First-Name-en-US
 nameValidatorText-en-US
 nameValidatorText-en
 nameValidatorText
 <code>
     <div style="visibility:hidden">
       <div id="nameValidatorText">have letters and special charcters like ',.-</div>
-      <div id="nameValidatorText-First-Name-en-US">{label} has illegal characters</div> 
+      <div id="nameValidatorText-First-Name-en-US">{label} has illegal characters</div>
     </div>
 </code>
 
@@ -35,8 +35,8 @@ String getLocaleString(String key, [String fieldName, String language, String co
   if (?fieldName && fieldName!=null) {
     fieldName = fieldName.replaceAll("*", "").trim();
     value = getLocaleString("$key-${fieldName.replaceAll(' ', '-')}", null, language, country);
-  } 
-  
+  }
+
   if (value=="undefined" || value == null){
     Element element = query("#${key}-${language}${country==null?'':'-$country'}");
     if (element == null) {
@@ -51,7 +51,7 @@ String getLocaleString(String key, [String fieldName, String language, String co
       value = element.text;
     }
   }
-  
+
   return value != null ? value.replaceAll("{label}", fieldName == null ? "{label}" : fieldName) : "undefined";
 }
 
@@ -60,11 +60,11 @@ bool nameValidator (String text, [LabelElement label, SpanElement element]) {
     return false;
   }
   if (!nameRegex.hasMatch(text)) {
-    
+
     if (?label){
       label.classes.add("error");
     }
-    
+
     if (?element) {
       String nameValidatorText = getLocaleString("nameValidatorText", label.text);
       element.appendText(nameValidatorText);
@@ -85,11 +85,11 @@ bool nameValidator (String text, [LabelElement label, SpanElement element]) {
 
 bool requiredValidator (String text, [LabelElement label, SpanElement element]) {
   if (text.isEmpty) {
-    
+
     if (?label){
       label.classes.add("error");
     }
-    
+
     if (?element) {
       String message = getLocaleString("requiredValidator", label.text);
       element.text = message;
@@ -113,15 +113,15 @@ class TableComponent {
   Element _div;
   String rowTemplate;
   Element _rows;
-  
+
   TableComponent(String tableName) {
-    
+
 
     _div = query("#${tableName}Div");
     _rows = query("#${tableName}Rows");
     rowTemplate = _rows.innerHtml;
 
-    
+
   }
   void setRows(String body) {
     _rows.innerHtml = body;
@@ -139,13 +139,13 @@ class FieldComponent {
   Function validator;
   Function requiredValidatorFunc = requiredValidator;
   Function action;
-  
+
   FieldComponent (Element form, String fieldName, [Function action, Function validator]) {
     this.fieldName = fieldName;
     this.textField = form.query("#${fieldName}");
     assert(textField!=null);
-    this.validationSpan = form.query("#${fieldName}Validation");  
-    this.label = form.query("#${fieldName}Label"); 
+    this.validationSpan = form.query("#${fieldName}Validation");
+    this.label = form.query("#${fieldName}Label");
     if (?validator) {
       this.validator = validator;
     } else {
@@ -156,15 +156,15 @@ class FieldComponent {
     */
     /*
     textField.on.focus.add(clearValidation);
-   
-    if (?action) {  
+
+    if (?action) {
       this.action = action;
       textField.on.keyUp.add(_keyUp);
     }
-    
+
      */
   }
-  
+
   void focus() {
     this.textField.focus();
   }
@@ -175,17 +175,17 @@ class FieldComponent {
     }
   }
   void _standardEventListener(Event e) {
-   
+
     this.validator(textField.value, this.label, this.validationSpan);
   }
-  
+
   void clearValidation(Event e) {
       this.label.classes.remove("error");
       this.validationSpan.classes.remove("error");
       this.validationSpan.text="";
   }
 
-  
+
   String value() {
     return textField.value;
   }
@@ -194,16 +194,16 @@ class FieldComponent {
     return textField.value="";
   }
 
-  
+
   bool isValid() {
      if (requiredValidatorFunc!=null) {
       if (this.requiredValidatorFunc(textField.value, this.label, this.validationSpan)) {
-        return this.validator(textField.value, this.label, this.validationSpan);        
+        return this.validator(textField.value, this.label, this.validationSpan);
       } else {
         return false;
       }
     } else {
-      return this.validator(textField.value, this.label, this.validationSpan);              
+      return this.validator(textField.value, this.label, this.validationSpan);
     }
     return false;
   }

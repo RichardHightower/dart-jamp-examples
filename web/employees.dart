@@ -1,6 +1,7 @@
 library employees;
+import 'mappable.dart';
 
-class Employee {
+class Employee implements Mappable {
   String firstName;
   String lastName;
   Employee (String firstName, String lastName) {

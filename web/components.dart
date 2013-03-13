@@ -72,10 +72,10 @@ bool nameValidator (String text, [LabelElement label, SpanElement element]) {
     }
     return false;
   }else {
-    if (?label) {
+    if (?label && label != null) {
       label.classes.remove("error");
     }
-    if (?element) {
+    if (?element && element != null) {
       element.classes.remove("error");
       element.text="";
     }
@@ -151,18 +151,13 @@ class FieldComponent {
     } else {
       this.validator = nameValidator;
     }
-    /*
-    textField.on.blur.add(_standardEventListener);
-    */
-    /*
-    textField.on.focus.add(clearValidation);
+    textField.onBlur.listen(_standardEventListener);
+    textField.onFocus.listen(clearValidation);
 
     if (?action) {
       this.action = action;
-      textField.on.keyUp.add(_keyUp);
+      textField.onKeyUp.listen(_keyUp);
     }
-
-     */
   }
 
   void focus() {
@@ -180,9 +175,11 @@ class FieldComponent {
   }
 
   void clearValidation(Event e) {
-      this.label.classes.remove("error");
-      this.validationSpan.classes.remove("error");
-      this.validationSpan.text="";
+      if (this.label!=null) {
+        this.label.classes.remove("error");
+        this.validationSpan.classes.remove("error");
+        this.validationSpan.text="";
+      }
   }
 
 

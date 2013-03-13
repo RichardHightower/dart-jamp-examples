@@ -7,6 +7,24 @@
     <link rel="stylesheet" href="employeelist.css">
   </head>
   <body>
+
+    <div id="loginPage">
+      <h1>Employee List Example - Login</h1>
+    
+      <p>Log in page, you must be logged in</p>
+      
+      <input type="text" id="userName" name="userName" placeholder="user name"/>
+      <br />
+
+      <input type="password" id="password" name="password" placeholder="password"/>
+      <br />
+      <button id="login">Login</button>
+      
+    </div>
+    
+    <div id="employeePage" style="visibility:hidden">
+    
+    
     <h1>Employee List Example</h1>
     
     <p>Employee List</p>
@@ -49,6 +67,7 @@
       <div id="employeeFormNotValid">The employee form is not valid, fix validation errors then try again.</div>
       <div id="employeeAdded">Added employee</div>
       
+    </div>
     </div>
     
     <script type="application/dart" src="employeelist.dart"></script>

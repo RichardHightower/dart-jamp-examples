@@ -2,8 +2,12 @@ import 'dart:html';
 import 'components.dart';
 import 'employees.dart';
 import 'employeeService.dart';
+import 'login.dart' as login;
+import 'jamp.dart' as jamp;
 
 
+
+DivElement employeePage;
 DivElement employeeForm;
 FieldComponent firstName;
 FieldComponent lastName;
@@ -18,7 +22,12 @@ TableComponent table;
 String rowTemplate = null;
 
 void main() {
+  employeePage = query("#employeePage");
+  jamp.initWebSocket();
+
+  login.initLogin(employeePage);
   initEmployeeService();
+  
   Function addAction = (Event e)=>addEmployee();
   Function refreshListAction = (Event e)=>refreshList();
 

@@ -13,29 +13,25 @@ Using the annotations below this service is exposed via JAMP/Websockets to the D
 ```Java
 package com.example;
 
+import io.jamp.core.AmpPublish;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-import javax.ejb.Startup;
-
-import com.caucho.amp.AmpPublish;
-import com.caucho.amp.AmpService;
-
-@AmpService
 @AmpPublish("/empService")
-@Startup
 public class EmployeeService {
+	
 
 	List<Employee> employees = new ArrayList<>();
 
-	public boolean addEmployee(String firstName, String lastName) {
-		employees.add(new Employee(firstName, lastName));
+	public boolean addEmployee(Employee employee) {
+		employee.setId(generateId());
+		employees.add(employee);
 		return true;
 	}
 
-	public boolean removeEmployee(String firstName, String lastName) {
-		employees.remove(new Employee(firstName, lastName));
+	public boolean removeEmployee(Employee employee) {
+		employees.remove(employee);
 		return true;
 	}
 
@@ -43,11 +39,43 @@ public class EmployeeService {
 		return employees;
 	}
 
-	@PostConstruct
-	public void init() {
+	
+	private long generateId() {
+		return System.currentTimeMillis();
 	}
 
 }
+
+package com.example;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.jamp.core.AmpPublish;
+
+import javax.ejb.Startup;
+
+@AmpPublish("/securityService")
+@Startup
+public class SecurityService {
+	private Map <String, User> users = new HashMap<>();
+	
+	{
+		users.put("vipin", new User("vipin", "shock"));
+		users.put("rick", new User("rick", "awe"));
+		users.put("jeff", new User("jeff", "geoff"));
+	}
+	
+	public boolean login(User aUser) {
+		User user = users.get(aUser.getUserName());
+		if (user == null) {
+			return false;
+		} else {
+			return user.getPassword().equals(aUser.getPassword());
+		}
+	}
+}
+
 
 ```
 RAMP (part of Resin 7) exposes that above service as a JAMP service.

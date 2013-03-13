@@ -45,7 +45,44 @@ public class EmployeeService {
 	}
 
 }
+```
+The Dart code to invoke the above would look like this:
 
+```Java
+library employeeService;
+import 'employees.dart';
+import 'jamp.dart' as jamp;
+
+class EmployeeService implements jamp.ReplyReciever {
+
+  List<Employee> employees = [];
+  String name = '"/empService"';
+  
+
+  void addEmployee(Employee employee, Function callback) {
+    print("addEmployee called Employee(${employee.firstName}, ${employee.lastName})" );
+    jamp.invokeJampMethod(name, '"addEmployee"', callback, [employee]);
+  }
+
+  void removeEmployee(Employee employee, Function callback) {
+    print("removeEmployee called Employee(${employee.firstName}, ${employee.lastName})" );
+    
+    jamp.invokeJampMethod(name, '"removeEmployee"', callback, [employee]);
+
+
+  }
+
+  void refreshList(Function callback) {
+    
+    jamp.invokeJampMethod(name, '"list"', callback, []);
+
+
+  }
+  ...
+
+```
+
+```Java
 package com.example;
 
 import java.util.HashMap;
@@ -76,13 +113,42 @@ public class SecurityService {
 	}
 }
 
+```
+The Dart code to invoke the above service would look like this:
+```Java
+library login;
+import 'dart:html';
+import 'components.dart';
+import 'jamp.dart' as jamp;
 
+
+class LoginService implements jamp.ReplyReciever {
+  String name = '"/securityService"';
+  
+  void login(String userName, String password, Function callback) {
+    print("login called ${userName}, ${password})" );
+    Map userMap = {"userName":userName, "password":password};
+    jamp.invokeJampMethod(name, '"login"', callback, [userMap]);
+  }
+  
+  void replyRecieved (jamp.JampMethodCall call, int qid, Object returnValue){
+    
+    if (call.methodName == '"login"') {
+      bool loggedIn = returnValue as bool;
+      jamp.calls.remove("$qid");
+      call.func();
+    } else {
+      print("What? No log in??? Do some error handling TODO");
+    }
+  }
+
+}
 ```
 RAMP (part of Resin 7) exposes that above service as a JAMP service.
 RAMP gurantees that the abve service is accessed in a single thread using the actor model.
 
 The Dart source which is part of this project whos how to formulate calls via JSON and recieve replies.
-The Dart source implements a simple CRUD listing for employees.
+The Dart source implements a simple CRUD listing for employees with a mock login service (which would have to be done differently).
 
 You can learn more about JAMP here:
 

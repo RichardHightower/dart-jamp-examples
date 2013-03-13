@@ -81,6 +81,10 @@ class EmployeeService implements jamp.ReplyReciever {
   ...
 
 ```
+I also created a little sample security service 
+(mainly so there would be two service so I could refactor the JAMP client lib 
+or rather start to really create a JAMP client lib).
+
 
 ```Java
 package com.example;

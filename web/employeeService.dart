@@ -13,34 +13,6 @@ class EmployeeService implements jamp.ReplyReciever {
   List<Employee> employees = [];
   String name = '"/empService"';
   
-  void replyRecieved (jamp.JampMethodCall call, int qid, Object returnValue){
-    
-    if (call.methodName == '"addEmployee"') {
-      bool added = returnValue as bool;
-      if (added) {
-        employees.add(call.args[0]);
-      }
-      jamp.calls.remove("$qid");
-      call.func();
-    } else if (call.methodName == '"removeEmployee"') {
-      bool removed = returnValue as bool;
-      if (removed) {
-        doRemoveEmployee(call.args[0]);
-      }
-      jamp.calls.remove("$qid");
-      call.func();
-    } else if (call.methodName == '"list"') {
-      employees = [];
-      List<Map> maps = returnValue as List<Map>;
-      for (Map map in maps) {
-        Employee e = new Employee(map["firstName"], map["lastName"]);
-        employees.add(e);
-      }
-      jamp.calls.remove("$qid");
-      call.func();
-    }
-
-  }
 
   void addEmployee(Employee employee, Function callback) {
     print("addEmployee called Employee(${employee.firstName}, ${employee.lastName})" );
@@ -70,6 +42,36 @@ class EmployeeService implements jamp.ReplyReciever {
     }
 
   }
+  
+  void replyRecieved (jamp.JampMethodCall call, int qid, Object returnValue){
+    
+    if (call.methodName == '"addEmployee"') {
+      bool added = returnValue as bool;
+      if (added) {
+        employees.add(call.args[0]);
+      }
+      jamp.calls.remove("$qid");
+      call.func();
+    } else if (call.methodName == '"removeEmployee"') {
+      bool removed = returnValue as bool;
+      if (removed) {
+        doRemoveEmployee(call.args[0]);
+      }
+      jamp.calls.remove("$qid");
+      call.func();
+    } else if (call.methodName == '"list"') {
+      employees = [];
+      List<Map> maps = returnValue as List<Map>;
+      for (Map map in maps) {
+        Employee e = new Employee(map["firstName"], map["lastName"]);
+        employees.add(e);
+      }
+      jamp.calls.remove("$qid");
+      call.func();
+    }
+
+  }
+
 
 
 }

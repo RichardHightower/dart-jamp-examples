@@ -4,9 +4,12 @@ import 'mappable.dart';
 class Employee implements Mappable {
   String firstName;
   String lastName;
-  Employee (String firstName, String lastName) {
+  int id;
+  
+  Employee (String firstName, String lastName, int id) {
     this.firstName = firstName;
     this.lastName = lastName;
+    this.id = id;
   }
 
   operator ==(Employee other) {
@@ -21,7 +24,7 @@ class Employee implements Mappable {
   }
 
   Map toMap() {
-    return {"firstName" : this.firstName, "lastName" : this.lastName};
+    return {"firstName" : this.firstName, "lastName" : this.lastName, "id" : this.id};
   }
 }
 

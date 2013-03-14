@@ -29,7 +29,7 @@ class EmployeeService implements jamp.ReplyReciever {
 
   void refreshList(Function callback) {
     
-    jamp.invokeJampMethod(name, '"refreshList"', callback, []);
+    jamp.invokeJampMethod(name, '"list"', callback, []);
 
 
   }
@@ -60,10 +60,11 @@ class EmployeeService implements jamp.ReplyReciever {
       jamp.calls.remove("$qid");
       call.func();
     } else if (call.methodName == '"list"') {
+      print ("here in list callback");
       employees = [];
       List<Map> maps = returnValue as List<Map>;
       for (Map map in maps) {
-        Employee e = new Employee(map["firstName"], map["lastName"]);
+        Employee e = new Employee(map["firstName"], map["lastName"], map["id"]);
         employees.add(e);
       }
       jamp.calls.remove("$qid");

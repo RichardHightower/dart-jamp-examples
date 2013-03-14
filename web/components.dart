@@ -24,7 +24,7 @@ nameValidatorText
 The strings are stored in the HTML page itself in span tags of a hidden div.
 If you do not specify a locale, the local is taken from window.navigator.language.
  */
-String getLocaleString(String key, [String fieldName, String language, String country]) {
+String getLocaleString(String key, [String fieldName, String language, String country, String vertical]) {
   String value;
   if (!?language) {
     String locale = window.navigator.language;

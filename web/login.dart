@@ -10,10 +10,11 @@ FieldComponent password;
 ButtonElement loginButton;
 DivElement showDiv;
 LoginService loginService;
+Function initApp;
 
-void initLogin(DivElement aShowDiv) {
+void initLogin(DivElement aShowDiv, Function aInitApp) {
   showDiv = aShowDiv;
-  
+  initApp = aInitApp;
   Function loginAction = (Event e)=>loginUser();
 
   loginDiv = query("#loginPage");
@@ -33,6 +34,7 @@ void loginUser() {
 }
 
 void loggedIn() {
+  initApp();
   showDiv.style.visibility="visible";
   loginDiv.style.visibility="hidden";
 }

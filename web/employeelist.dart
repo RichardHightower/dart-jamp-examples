@@ -25,7 +25,10 @@ void main() {
   employeePage = query("#employeePage");
   jamp.initWebSocket();
 
-  login.initLogin(employeePage);
+  login.initLogin(employeePage, initEmployeeListing);
+}
+
+void initEmployeeListing() {
   initEmployeeService();
   
   Function addAction = (Event e)=>addEmployee();
@@ -42,6 +45,8 @@ void main() {
   refreshListButton.onClick.listen(refreshListAction);
   components = [firstName, lastName];
   table = new TableComponent("employee");
+  refreshList();
+
 }
 
 void refreshList() {
@@ -50,7 +55,7 @@ void refreshList() {
 }
 
 void addEmployee() {
-  Employee employee = new Employee(firstName.value(), lastName.value());
+  Employee employee = new Employee(firstName.value(), lastName.value(), 0);
   if (components.every(componentValid)) {
     employeeService.addEmployee(employee, populateTable);
     message.text = getLocaleString("employeeAdded");
@@ -71,6 +76,7 @@ void populateTable() {
     body.write(rowTemplate
         .replaceAll("{{employee.firstName}}", employee.firstName)
         .replaceAll("{{employee.lastName}}", employee.lastName)
+        .replaceAll("{{employee.id}}", employee.id.toString())
         .replaceAll("{{rowId}}", "$index"));
   }
   table.setRows(body.toString());
@@ -86,7 +92,8 @@ void removeLinkClicked(MouseEvent event) {
   List<String> parts = link.href.split("/");
   String firstName = parts[3];
   String lastName = parts[4];
-  Employee employee = new Employee(firstName, lastName);
+  int id = int.parse(parts[5]);
+  Employee employee = new Employee(firstName, lastName, id);
   employeeService.removeEmployee(employee, populateTable);
 
 }

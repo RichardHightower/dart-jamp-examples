@@ -18,6 +18,15 @@
 
       <input type="password" id="password" name="password" placeholder="password"/>
       <br />
+      
+      <select>
+        <option value="1">English</option>
+        <option value="2">Spanish</option>
+        <option value="3">Retail</option>
+        <option value="4">Manufacturing</option>
+      </select>
+      
+      <br />
       <button id="login">Login</button>
       
     </div>
@@ -54,7 +63,7 @@
             <tr id="row-{{rowId}}">
                 <td>{{employee.firstName}}</td>
                 <td>{{employee.lastName}}</td>
-                <td><a id="row-remove{{rowId}}" class="row-remove-link" href="http://host/{{employee.firstName}}/{{employee.lastName}}">remove</a></td>          
+                <td><a id="row-remove{{rowId}}" class="row-remove-link" href="http://host/{{employee.firstName}}/{{employee.lastName}}/{{employee.id}}/">remove</a></td>          
             </tr>
             </tbody>
         </table>
